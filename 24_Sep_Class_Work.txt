@@ -1,0 +1,557 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classwork          |
+| information_schema |
+| performance_schema |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> use classwork;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| customers           |
+| dept                |
+| emp                 |
+| emp_cpy             |
+| j                   |
+| new_table           |
+| orders              |
+| p                   |
+| parts               |
+| projects            |
+| s                   |
+| salespeople         |
+| sdept               |
+| semp                |
+| sp                  |
+| spj                 |
+| supplier            |
++---------------------+
+17 rows in set (0.01 sec)
+
+mysql> create table temp(fir int, sec char(15));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> delimiter //
+mysql> create procedure abc()
+    -> begin
+    -> insert into temp values(1, 'Hello');
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call abc();
+
+mysql> select * from temp;
++------+-------+
+| fir  | sec   |
++------+-------+
+|    1 | Hello |
++------+-------+
+1 row in set (0.00 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test               |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> show procedure status where db = 'classwork';;
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db        | Name | Type      | Definer         | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| classwork | abc  | PROCEDURE | Sagar@localhost | 2022-09-24 14:22:05 | 2022-09-24 14:22:05 | DEFINER       |         | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> drop procedure abc;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create procedure abc()
+    -> begin
+    -> declare x int;
+    -> insert into temp values(x, 'Hello');
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call abc() //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp //
++------+-------+
+| fir  | sec   |
++------+-------+
+|    1 | Hello |
+| NULL | Hello |
++------+-------+
+2 rows in set (0.00 sec)
+
+
+mysql> create procedure abc()
+    -> begin
+    -> declare x int default 10;
+    -> set x = 10;
+    -> insert into temp values(x, 'Hello');
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call abc(); //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp //
++------+-------+
+| fir  | sec   |
++------+-------+
+|    1 | Hello |
+| NULL | Hello |
+|   10 | Hello |
++------+-------+
+3 rows in set (0.00 sec)
+
+mysql> drop procedure abc//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from temp;
+    -> //
++------+-------+
+| fir  | sec   |
++------+-------+
+|    1 | Hello |
+| NULL | Hello |
+|   10 | Hello |
+|  101 | Sagar |
++------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> show procedure status where db = 'classwork';
+    -> //
+Empty set (0.00 sec)
+
+mysql> show procedure status where db = 'classwork' //
+Empty set (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int default 201;
+    -> insert into temp values(a, 'abc');
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz() //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * FROm temp //
++------+-------+
+| fir  | sec   |
++------+-------+
+|    1 | Hello |
+| NULL | Hello |
+|   10 | Hello |
+|  101 | Sagar |
+|  201 | abc   |
++------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create procedure abc()
+    -> begin
+    -> declare x char(15) DEFAULT 'KING';
+    -> declare y float(7,2) default 3000;
+    -> declare z float(2,1) default 0.4;
+    -> declare hra float(7,2);
+    -> set hra = y*z;
+    -> insert into temp values(y, x);
+    -> insert into temp values(hra,'HRA');
+    -> end //
+ERROR 1304 (42000): PROCEDURE abc already exists
+
+mysql> show procedure status where db = 'classwork';
+    -> //
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db        | Name | Type      | Definer         | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| classwork | abc  | PROCEDURE | Sagar@localhost | 2022-09-24 14:46:13 | 2022-09-24 14:46:13 | DEFINER       |         | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
+| classwork | xyz  | PROCEDURE | Sagar@localhost | 2022-09-24 14:43:12 | 2022-09-24 14:43:12 | DEFINER       |         | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+2 rows in set (0.00 sec)
+
+mysql> drop procedure abc;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure xyz//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare x char(15) DEFAULT 'KING';
+    -> declare y float(7,2) default 3000;
+    -> declare z float(2,1) default 0.4;
+    -> declare hra float(7,2);
+    -> set hra = y*z;
+    -> insert into temp values(y, x);
+    -> insert into temp values(hra,'HRA');
+    -> end //
+Query OK, 0 rows affected, 3 warnings (0.00 sec)
+
+mysql> call xyz() //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp //
++------+-------+
+| fir  | sec   |
++------+-------+
+|    1 | Hello |
+| NULL | Hello |
+|   10 | Hello |
+|  101 | Sagar |
+|  201 | abc   |
+| 3000 | KING  |
+| 1200 | HRA   |
++------+-------+
+7 rows in set (0.00 sec)
+
+mysql> drop procedure xyz //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure abc(x char(15), y float, z float)
+    -> begin
+    -> declare hra float;
+    -> set hra = y*z;
+    -> insert into temp values(y,x);
+    -> insert into temp values(hra,'HRA');
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from temp;
+    -> //
++------+-------+
+| fir  | sec   |
++------+-------+
+|    1 | Hello |
+| NULL | Hello |
+|   10 | Hello |
+|  101 | Sagar |
+|  201 | abc   |
+| 3000 | KING  |
+| 1200 | HRA   |
+| 1000 | KING  |
+|  400 | HRA   |
++------+-------+
+9 rows in set (0.00 sec)
+
+mysql> delete from temp;
+    -> //
+Query OK, 9 rows affected (0.00 sec)
+
+mysql> select * from temp//
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+-------+------+
+| SALARY | ename | eno  |
++--------+-------+------+
+|   5000 | SCOTT |  101 |
+|   6000 | KING  |  102 |
++--------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> show procedure status where db = 'classwork';
+    -> //
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db        | Name | Type      | Definer         | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| classwork | abc  | PROCEDURE | Sagar@localhost | 2022-09-24 15:07:33 | 2022-09-24 15:07:33 | DEFINER       |         | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
++-----------+------+-----------+-----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> drop procedure abc//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure abc()
+    -> begin
+    -> declare x int;
+    -> select sal into x from emp where ename ='king';
+    -> insert into temp values(x, 'King');
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> desc emp;
+    -> //
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| SALARY | int         | YES  |     | NULL    |       |
+| ename  | varchar(20) | YES  |     | NULL    |       |
+| eno    | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> drop procedure abc//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure abc()
+    -> begin
+    -> declare x int;
+    -> select salary into x from emp where ename = 'king';
+    -> insert into temp values(x, 'Queen');
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call abc()//
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp//
++------+-------+
+| fir  | sec   |
++------+-------+
+| 6000 | Queen |
++------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp//
++--------+-------+------+
+| SALARY | ename | eno  |
++--------+-------+------+
+|   5000 | SCOTT |  101 |
+|   6000 | KING  |  102 |
++--------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> desc emp;
+    -> //
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| SALARY | int         | YES  |     | NULL    |       |
+| ename  | varchar(20) | YES  |     | NULL    |       |
+| eno    | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create procedure abc2()
+    -> begin
+    -> declare x int;
+    -> declare y char(15);
+    -> select salary, ename into x,y from emp where ename = 'king';
+    -> insert into temp values(x,y);
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from temp;
+    -> //
++------+-------+
+| fir  | sec   |
++------+-------+
+| 6000 | Queen |
++------+-------+
+1 row in set (0.00 sec)
+
+mysql> call abc2()//
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp;//
++------+-------+
+| fir  | sec   |
++------+-------+
+| 6000 | Queen |
+| 6000 | KING  |
++------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from temp//
++------+-------+
+| fir  | sec   |
++------+-------+
+| 6000 | Queen |
+| 6000 | KING  |
++------+-------+
+2 rows in set (0.00 sec)
+
+mysql> show create procedure abc;
+    -> //
++-----------+---------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+--------------------+
+| Procedure | sql_mode                                                      | Create Procedure                                                                                                                                                       | character_set_client | collation_connection | Database Collation |
++-----------+---------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+--------------------+
+| abc       | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION | CREATE DEFINER=`Sagar`@`localhost` PROCEDURE `abc`()
+begin
+declare x int;
+select salary into x from emp where ename = 'king';
+insert into temp values(x, 'Queen');
+end | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
++-----------+---------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> show create procedure abc2;
+    -> //
++-----------+---------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+--------------------+
+| Procedure | sql_mode                                                      | Create Procedure                                                                                                                                                                               | character_set_client | collation_connection | Database Collation |
++-----------+---------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+--------------------+
+| abc2      | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION | CREATE DEFINER=`Sagar`@`localhost` PROCEDURE `abc2`()
+begin
+declare x int;
+declare y char(15);
+select salary, ename into x,y from emp where ename = 'king';
+insert into temp values(x,y);
+end | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
++-----------+---------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> create procedure abc3()
+    -> begin
+    -> declare x int;
+    -> select sal into x from emp where ename ='king';
+    -> if x > 4000 then
+    -> insert into temp values(x, 'High Sal');
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create procedure abc4()
+    -> begin
+    -> declare x int;
+    -> select salary into x from emp where ename ='king';
+    -> if x > 4000 then
+    -> insert into temp values(x, 'High Sal');
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call abc4()//
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp//
++------+----------+
+| fir  | sec      |
++------+----------+
+| 6000 | Queen    |
+| 6000 | KING     |
+| 6000 | High Sal |
++------+----------+
+3 rows in set (0.00 sec)
+
+mysql> create procedure abc5()
+    -> begin
+    -> declare x int
+    -> ;
+    -> select salary into x from emp where ename = 'King';
+    -> if x > 5000 then
+    -> insert into temp values(x, 'High Salary');
+    -> else
+    -> insert into temp values(x, 'Low Salary');
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call abc5()//
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp//
++------+-------------+
+| fir  | sec         |
++------+-------------+
+| 6000 | Queen       |
+| 6000 | KING        |
+| 6000 | High Sal    |
+| 6000 | High Salary |
++------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> create procedure abc6()
+    -> begin declare x int default 1;
+    -> while x < 10  do
+    -> insert into temp values(x,'IN while loop');
+    -> set x = x + 1;
+    -> end while;
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call abc6()//
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from temp//
++------+---------------+
+| fir  | sec           |
++------+---------------+
+| 6000 | Queen         |
+| 6000 | KING          |
+| 6000 | High Sal      |
+| 6000 | High Salary   |
+|    1 | IN while loop |
+|    2 | IN while loop |
+|    3 | IN while loop |
+|    4 | IN while loop |
+|    5 | IN while loop |
+|    6 | IN while loop |
+|    7 | IN while loop |
+|    8 | IN while loop |
+|    9 | IN while loop |
++------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> create procedure abc7()
+    -> begin
+    -> declare x int default 1;
+    ->
+    -> declare y int default 1;
+    -> while x < 10 do
+    -> while y < 10 do
+    -> insert into temp values(y, 'Inside Y Loop');
+    -> set y = y + 1;
+    -> end while;
+    -> insert into temp values(x, 'Inside X Loop');
+    -> set x = x + 1 ;
+    -> end while;
+    -> end //
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> call abc7()//
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from temp//
++------+---------------+
+| fir  | sec           |
++------+---------------+
+| 6000 | Queen         |
+| 6000 | KING          |
+| 6000 | High Sal      |
+| 6000 | High Salary   |
+|    1 | IN while loop |
+|    2 | IN while loop |
+|    3 | IN while loop |
+|    4 | IN while loop |
+|    5 | IN while loop |
+|    6 | IN while loop |
+|    7 | IN while loop |
+|    8 | IN while loop |
+|    9 | IN while loop |
+|    1 | Inside Y Loop |
+|    2 | Inside Y Loop |
+|    3 | Inside Y Loop |
+|    4 | Inside Y Loop |
+|    5 | Inside Y Loop |
+|    6 | Inside Y Loop |
+|    7 | Inside Y Loop |
+|    8 | Inside Y Loop |
+|    9 | Inside Y Loop |
+|    1 | Inside X Loop |
+|    2 | Inside X Loop |
+|    3 | Inside X Loop |
+|    4 | Inside X Loop |
+|    5 | Inside X Loop |
+|    6 | Inside X Loop |
+|    7 | Inside X Loop |
+|    8 | Inside X Loop |
+|    9 | Inside X Loop |
++------+---------------+

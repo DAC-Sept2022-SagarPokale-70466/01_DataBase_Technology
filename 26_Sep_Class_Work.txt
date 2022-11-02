@@ -1,0 +1,1095 @@
+mysql> use classwork
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| customers           |
+| dept                |
+| dhead               |
+| emp                 |
+| new_table           |
+| orders              |
+| parts               |
+| projects            |
+| salespeople         |
+| semp                |
+| spj                 |
+| supplier            |
+| temp                |
++---------------------+
+13 rows in set (0.01 sec)
+
+mysql> select * from emp;
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from temp;
+Empty set (0.00 sec)
+
+mysql> desc temp;
++-------+----------+------+-----+---------+-------+
+| Field | Type     | Null | Key | Default | Extra |
++-------+----------+------+-----+---------+-------+
+| fir   | int      | YES  |     | NULL    |       |
+| sec   | char(15) | YES  |     | NULL    |       |
++-------+----------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create procedure pqr()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int;
+    -> declare d int;
+    -> declare x int default 0;
+    -> declare c1 cursor for select * from emp;
+    -> open c1;
+    -> while x < 5 do
+    -> fetch c1 into a,b,c,d;
+    -> insert into temp values(a,b);
+    -> set x = x + 1;
+    -> end while;
+    -> close c1;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call pqr;
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from temp;
+    -> //
++-------+--------+
+| fir   | sec    |
++-------+--------+
+|  5000 | Arun   |
+|  6000 | Ali    |
+|  6000 | Kirun  |
+| 10000 | Jack   |
+| 10000 | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> delete from temp;
+    -> //
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int
+    -> ;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->          leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = a;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from temp //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = b;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //create procedure xyz()
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = b;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from temp //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set sal = sal + 1;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set salary = salary + 1;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from temp;
+    -> //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5004 | Arun   | 101 |      1 |
+|   6004 | Ali    | 102 |      1 |
+|   6004 | Kirun  | 103 |      1 |
+|  10004 | Jack   | 104 |      2 |
+|  10004 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set salary = salary + 1;
+    -> insert into temp values(a,b);
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from temp;
+    -> //
++-------+--------+
+| fir   | sec    |
++-------+--------+
+|  5004 | Arun   |
+|  6004 | Ali    |
+|  6004 | Kirun  |
+| 10004 | Jack   |
+| 10004 | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp;
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from temp;
+Empty set (0.00 sec)
+
+mysql> desc temp;
++-------+----------+------+-----+---------+-------+
+| Field | Type     | Null | Key | Default | Extra |
++-------+----------+------+-----+---------+-------+
+| fir   | int      | YES  |     | NULL    |       |
+| sec   | char(15) | YES  |     | NULL    |       |
++-------+----------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create procedure pqr()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int;
+    -> declare d int;
+    -> declare x int default 0;
+    -> declare c1 cursor for select * from emp;
+    -> open c1;
+    -> while x < 5 do
+    -> fetch c1 into a,b,c,d;
+    -> insert into temp values(a,b);
+    -> set x = x + 1;
+    -> end while;
+    -> close c1;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call pqr;
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from temp;
+    -> //
++-------+--------+
+| fir   | sec    |
++-------+--------+
+|  5000 | Arun   |
+|  6000 | Ali    |
+|  6000 | Kirun  |
+| 10000 | Jack   |
+| 10000 | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> delete from temp;
+    -> //
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int
+    -> ;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->          leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = a;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from temp//
+Empty set (0.00 sec)
+
+mysql> select * from temp //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = b;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = b;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from temp //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set sal = sal + 1;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set salary = salary + 1;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from temp;
+    -> //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5004 | Arun   | 101 |      1 |
+|   6004 | Ali    | 102 |      1 |
+|   6004 | Kirun  | 103 |      1 |
+|  10004 | Jack   | 104 |      2 |
+|  10004 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set salary = salary + 1;
+    -> insert into temp values(a,b);
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from temp;
+    -> //
++-------+--------+
+| fir   | sec    |
++-------+--------+
+|  5004 | Arun   |
+|  6004 | Ali    |
+|  6004 | Kirun  |
+| 10004 | Jack   |
+| 10004 | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+
+mysql> select * from emp;
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from temp;
+Empty set (0.00 sec)
+
+mysql> desc temp;
++-------+----------+------+-----+---------+-------+
+| Field | Type     | Null | Key | Default | Extra |
++-------+----------+------+-----+---------+-------+
+| fir   | int      | YES  |     | NULL    |       |
+| sec   | char(15) | YES  |     | NULL    |       |
++-------+----------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create procedure pqr()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int;
+    -> declare d int;
+    -> declare x int default 0;
+    -> declare c1 cursor for select * from emp;
+    -> open c1;
+    -> while x < 5 do
+    -> fetch c1 into a,b,c,d;
+    -> insert into temp values(a,b);
+    -> set x = x + 1;
+    -> end while;
+    -> close c1;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call pqr;
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from temp;
+    -> //
++-------+--------+
+| fir   | sec    |
++-------+--------+
+|  5000 | Arun   |
+|  6000 | Ali    |
+|  6000 | Kirun  |
+| 10000 | Jack   |
+| 10000 | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> delete from temp;
+    -> //
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int
+    -> ;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->          leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = a;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from temp //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create function fun1(y int)
+    -> returns boolean
+    -> deterministic
+    -> begin
+    -> if y > 5000 then
+    ->          return true;
+    -> else
+    ->          return false;
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure pqr1()
+    -> begin
+    -> declare x int;
+    -> select salary into x from emp where ename = 'sagar';
+    -> if fun1(x) then
+    ->          insert into temp values(x,' greater than');
+    -> else
+    ->          insert into temp values(x,' less than');
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call pqr1()//
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp//
++------+-----------------+
+| fir  | sec             |
++------+-----------------+
+|   10 | After abc       |
+|   81 | pass by values  |
+| NULL |  less than 5000 |
+| 8000 |  greater than   |
++------+-----------------+
+4 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = b;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //create procedure xyz()
+Query OK, 0 rows affected (0.01 sec)
+
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = b;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //^C
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if c > 5000 then
+    ->                  update emp set sal = sal + 1 where empno = b;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from temp;
+    -> ..
+    -> ^C
+mysql> select * from temp //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5000 | Arun   | 101 |      1 |
+|   6000 | Ali    | 102 |      1 |
+|   6000 | Kirun  | 103 |      1 |
+|  10000 | Jack   | 104 |      2 |
+|  10000 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set sal = sal + 1;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set salary = salary + 1;
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from temp;
+    -> //
+Empty set (0.00 sec)
+
+mysql> select * from emp;
+    -> //
++--------+--------+-----+--------+
+| SALARY | ename  | eno | Deptno |
++--------+--------+-----+--------+
+|   5004 | Arun   | 101 |      1 |
+|   6004 | Ali    | 102 |      1 |
+|   6004 | Kirun  | 103 |      1 |
+|  10004 | Jack   | 104 |      2 |
+|  10004 | Thomas | 105 |      2 |
++--------+--------+-----+--------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure xyz;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure xyz()
+    -> begin
+    -> declare a int;
+    -> declare b varchar(15);
+    -> declare c int ;
+    -> declare d int;
+    -> declare y int default 0;
+    -> declare c1 cursor for select * from emp for update;
+    -> declare continue handler for not found set y = 1;
+    -> open c1;
+    -> cursor_loop : loop
+    -> fetch c1 into a,b,c,d;
+    -> if y = 1 then
+    ->         leave cursor_loop;
+    -> end if;
+    -> if a > 5000 then
+    ->                  update emp set salary = salary + 1;
+    -> insert into temp values(a,b);
+    -> end if;
+    -> end loop cursor_loop;
+    -> close c1;
+    -> commit;
+    -> end; //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call xyz;
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from temp;
+    -> //
++-------+--------+
+| fir   | sec    |
++-------+--------+
+|  5004 | Arun   |
+|  6004 | Ali    |
+|  6004 | Kirun  |
+| 10004 | Jack   |
+| 10004 | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+
+mysql> delimiter //
+mysql> create function abc()
+    -> returns int
+    -> deterministic
+    -> begin
+    -> return 10;
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure pqr;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure pqr()
+    -> begin
+    -> declare x int;
+    -> set x = abc();
+    -> insert into temp values(x, 'After abc');
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call pqr() //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp;
+    -> //
++-------+-----------+
+| fir   | sec       |
++-------+-----------+
+|  5004 | Arun      |
+|  6004 | Ali       |
+|  6004 | Kirun     |
+| 10004 | Jack      |
+| 10004 | Thomas    |
+|    10 | After abc |
++-------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> delete from temp//
+Query OK, 6 rows affected (0.00 sec)
+
+mysql> call pqr() //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from temp;
+    -> //
++------+-----------+
+| fir  | sec       |
++------+-----------+
+|   10 | After abc |
++------+-----------+
+1 row in set (0.00 sec)
+
+mysql> a
+
+ grant select on v1 to Sagar@localhost//
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+mysql> select * from classwork.v1;
++--------+-----+
+| ename  | eno |
++--------+-----+
+| Arun   | 101 |
+| Ali    | 102 |
+| Kirun  | 103 |
+| Jack   | 104 |
+| Thomas | 105 |
+| Sagar  | 106 |
++--------+-----+
+6 rows in set (0.00 sec)
+mysql> show full tables//
++---------------------+------------+
+| Tables_in_classwork | Table_type |
++---------------------+------------+
+| customers           | BASE TABLE |
+| dept                | BASE TABLE |
+| dhead               | BASE TABLE |
+| emp                 | BASE TABLE |
+| new_table           | BASE TABLE |
+| orders              | BASE TABLE |
+| parts               | BASE TABLE |
+| projects            | BASE TABLE |
+| salespeople         | BASE TABLE |
+| semp                | BASE TABLE |
+| spj                 | BASE TABLE |
+| supplier            | BASE TABLE |
+| temp                | BASE TABLE |
+| trg                 | BASE TABLE |
+| v1                  | VIEW       |
++---------------------+------------+
+
+
+mysql> show create view v1//
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
+| View | Create View                                                                                                                                             | character_set_client | collation_connection |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
+| v1   | CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v1` AS select `emp`.`ename` AS `ename`,`emp`.`eno` AS `eno` from `emp` | cp850                | cp850_general_ci     |
++------+---------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
+
+
+
+
+

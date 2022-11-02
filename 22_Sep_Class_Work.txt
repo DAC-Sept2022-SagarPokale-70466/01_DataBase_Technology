@@ -1,0 +1,493 @@
+mysql> use classwork;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| customers           |
+| dept                |
+| emp                 |
+| j                   |
+| new_table           |
+| orders              |
+| p                   |
+| parts               |
+| projects            |
+| s                   |
+| salespeople         |
+| sdept               |
+| semp                |
+| sp                  |
+| spj                 |
+| supplier            |
++---------------------+
+16 rows in set (0.02 sec)
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.02 sec)
+
+mysql> drop table emp;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Empno | int         | YES  |     | NULL    |       |
+| Ename | varchar(20) | YES  |     | NULL    |       |
+| sal   | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into emp values(101, 'SCOTT', 5000),(102,'KING', 6000);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> rename table emp to Employee;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| customers           |
+| dept                |
+| employee            |
+| j                   |
+| new_table           |
+| orders              |
+| p                   |
+| parts               |
+| projects            |
+| s                   |
+| salespeople         |
+| sdept               |
+| semp                |
+| sp                  |
+| spj                 |
+| supplier            |
++---------------------+
+16 rows in set (0.00 sec)
+
+mysql> alter table employee add gst float;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------+-------+------+------+
+| Empno | Ename | sal  | gst  |
++-------+-------+------+------+
+|   101 | SCOTT | 5000 | NULL |
+|   102 | KING  | 6000 | NULL |
++-------+-------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> alter table employee drop column gst;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------+-------+------+
+| Empno | Ename | sal  |
++-------+-------+------+
+|   101 | SCOTT | 5000 |
+|   102 | KING  | 6000 |
++-------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> rename table employee to emp;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from emp;
++-------+-------+------+
+| Empno | Ename | sal  |
++-------+-------+------+
+|   101 | SCOTT | 5000 |
+|   102 | KING  | 6000 |
++-------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Empno | int         | YES  |     | NULL    |       |
+| Ename | varchar(20) | YES  |     | NULL    |       |
+| sal   | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Empno | int         | YES  |     | NULL    |       |
+| ename | varchar(30) | YES  |     | NULL    |       |
+| sal   | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table emp add x varchar(15);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++-------+-------+------+------+
+| Empno | ename | sal  | x    |
++-------+-------+------+------+
+|   101 | SCOTT | 5000 | NULL |
+|   102 | KING  | 6000 | NULL |
++-------+-------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> update emp set x = ename, ename = null;
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from emp;
++-------+-------+------+-------+
+| Empno | ename | sal  | x     |
++-------+-------+------+-------+
+|   101 | NULL  | 5000 | SCOTT |
+|   102 | NULL  | 6000 | KING  |
++-------+-------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table emp modify ename varchar(15);
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Empno | int         | YES  |     | NULL    |       |
+| ename | varchar(15) | YES  |     | NULL    |       |
+| sal   | int         | YES  |     | NULL    |       |
+| x     | varchar(15) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> update emp set ename = x, x= null;
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from emp;
++-------+-------+------+------+
+| Empno | ename | sal  | x    |
++-------+-------+------+------+
+|   101 | SCOTT | 5000 | NULL |
+|   102 | KING  | 6000 | NULL |
++-------+-------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Empno | int         | YES  |     | NULL    |       |
+| ename | varchar(15) | YES  |     | NULL    |       |
+| sal   | int         | YES  |     | NULL    |       |
+| x     | varchar(15) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Empno | int         | YES  |     | NULL    |       |
+| ename | varchar(15) | YES  |     | NULL    |       |
+| sal   | int         | YES  |     | NULL    |       |
+| x     | varchar(15) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+-------+------+------+
+| Empno | ename | sal  | x    |
++-------+-------+------+------+
+|   101 | SCOTT | 5000 | NULL |
+|   102 | KING  | 6000 | NULL |
++-------+-------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> update emp set x = ename, ename = null;
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from emp;
++-------+-------+------+-------+
+| Empno | ename | sal  | x     |
++-------+-------+------+-------+
+|   101 | NULL  | 5000 | SCOTT |
+|   102 | NULL  | 6000 | KING  |
++-------+-------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table emp modify empno varchar(5);
+Query OK, 2 rows affected (0.08 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| empno | varchar(5)  | YES  |     | NULL    |       |
+| ename | varchar(15) | YES  |     | NULL    |       |
+| sal   | int         | YES  |     | NULL    |       |
+| x     | varchar(15) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table emp_cpy
+    -> as
+    -> select * from emp;
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| customers           |
+| dept                |
+| emp                 |
+| emp_cpy             |
+| j                   |
+| new_table           |
+| orders              |
+| p                   |
+| parts               |
+| projects            |
+| s                   |
+| salespeople         |
+| sdept               |
+| semp                |
+| sp                  |
+| spj                 |
+| supplier            |
++---------------------+
+17 rows in set (0.00 sec)
+
+mysql> drop table emp_cpy;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table emp_cpy
+    -> as
+    -> select empno, ename from emp;
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp_cpy;
++-------+-------+
+| empno | ename |
++-------+-------+
+| 101   | NULL  |
+| 102   | NULL  |
++-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+-------+------+-------+
+| empno | ename | sal  | x     |
++-------+-------+------+-------+
+| 101   | NULL  | 5000 | SCOTT |
+| 102   | NULL  | 6000 | KING  |
++-------+-------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update emp set ename = x;
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from emp;
++-------+-------+------+-------+
+| empno | ename | sal  | x     |
++-------+-------+------+-------+
+| 101   | SCOTT | 5000 | SCOTT |
+| 102   | KING  | 6000 | KING  |
++-------+-------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update emp set ename = x, x = null;
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from emp;
++-------+-------+------+------+
+| empno | ename | sal  | x    |
++-------+-------+------+------+
+| 101   | SCOTT | 5000 | NULL |
+| 102   | KING  | 6000 | NULL |
++-------+-------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> set autocommit = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create table emp_struct
+    -> as
+    -> select * from emp;
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp_struct;
++-------+-------+------+------+
+| empno | ename | sal  | x    |
++-------+-------+------+------+
+| 101   | SCOTT | 5000 | NULL |
+| 102   | KING  | 6000 | NULL |
++-------+-------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> delete from emp_struct;
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> select * from emp_struct;
+Empty set (0.00 sec)
+
+mysql> drop table emp_struct;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table emp_struct
+    -> as
+    -> select empno, ename from emp
+    -> where sal = 5000;
+Query OK, 1 row affected (0.02 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp_struct;
++-------+-------+
+| empno | ename |
++-------+-------+
+| 101   | SCOTT |
++-------+-------+
+1 row in set (0.00 sec)
+
+mysql> drop table emp_struct;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table emp2
+    -> as
+    -> select empno"EMPLOYEE_NO", ename"EMPLOYEE_NAME", sal"SALARY"
+    -> from emp;
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> drop table emp;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> rename table emp2 to emp;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from emp;
++-------------+---------------+--------+
+| EMPLOYEE_NO | EMPLOYEE_NAME | SALARY |
++-------------+---------------+--------+
+| 101         | SCOTT         |   5000 |
+| 102         | KING          |   6000 |
++-------------+---------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> alter table emp change column SALARY sal int;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++-------------+---------------+------+
+| EMPLOYEE_NO | EMPLOYEE_NAME | sal  |
++-------------+---------------+------+
+| 101         | SCOTT         | 5000 |
+| 102         | KING          | 6000 |
++-------------+---------------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp2;
+ERROR 1146 (42S02): Table 'classwork.emp2' doesn't exist
+mysql> create table emp2
+    -> as
+    -> select sal"SALARY", Employee_name, employee_no from emp;
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> drop table emp;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> rename table emp2 to emp;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from emp;
++--------+---------------+-------------+
+| SALARY | Employee_name | employee_no |
++--------+---------------+-------------+
+|   5000 | SCOTT         | 101         |
+|   6000 | KING          | 102         |
++--------+---------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> alter table emp change employee_no eno int;
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> alter table emp change employee_name ename varchar(20);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++--------+-------+------+
+| SALARY | ename | eno  |
++--------+-------+------+
+|   5000 | SCOTT |  101 |
+|   6000 | KING  |  102 |
++--------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> create index IND_eno on emp(eno);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp where eno = 101;
++--------+-------+------+
+| SALARY | ename | eno  |
++--------+-------+------+
+|   5000 | SCOTT |  101 |
++--------+-------+------+
+1 row in set (0.00 sec)
+
+mysql> show indexes from emp;
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| emp   |          1 | IND_eno  |            1 | eno         | A         |           2 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+1 row in set (0.00 sec)
+
+mysql> use information_schema;
+Database changed
+mysql> select * from statistics;
++---------------+--------------------+-------------------------------+------------+--------------------+------------+--------------+----------------+-----------+-------------+----------+--------+----------+------------+---------+---------------+------------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA       | TABLE_NAME                    | NON_UNIQUE | INDEX_SCHEMA       | INDEX_NAME | SEQ_IN_INDEX | COLUMN_NAME    | COLLATION | CARDINALITY | SUB_PART | PACKED | NULLABLE | INDEX_TYPE | COMMENT | INDEX_COMMENT | IS_VISIBLE | EXPRESSION |
++---------------+--------------------+-------------------------------+------------+--------------------+------------+--------------+----------------+-----------+-------------+----------+--------+----------+------------+---------+---------------+------------+------------+
+| def           | performance_schema | processlist                   |          0 | performance_schema | PRIMARY    |            1 | ID             | NULL      |        NULL |     NULL |   NULL |          | HASH       |         |               | YES        | NULL       |
+| def           | performance_schema | session_account_connect_attrs |          0 | performance_schema | PRIMARY    |            1 | PROCESSLIST_ID | NULL      |        NULL |     NULL |   NULL |          | HASH       |         |               | YES        | NULL       |
+| def           | performance_schema | session_account_connect_attrs |          0 | performance_schema | PRIMARY    |            2 | ATTR_NAME      | NULL      |        NULL |     NULL |   NULL |          | HASH       |         |               | YES        | NULL       |
+| def           | performance_schema | global_status                 |          0 | performance_schema | PRIMARY    |            1 | VARIABLE_NAME  | NULL      |        NULL |     NULL |   NULL |          | HASH       |         |               | YES        | NULL       |
+| def           | performance_schema | session_status                |          0 | performance_schema | PRIMARY    |            1 | VARIABLE_NAME  | NULL      |        NULL |     NULL |   NULL |          | HASH       |         |               | YES        | NULL       |
+| def           | performance_schema | global_variables              |          0 | performance_schema | PRIMARY    |            1 | VARIABLE_NAME  | NULL      |        NULL |     NULL |   NULL |          | HASH       |         |               | YES        | NULL       |
+| def           | performance_schema | session_variables             |          0 | performance_schema | PRIMARY    |            1 | VARIABLE_NAME  | NULL      |        NULL |     NULL |   NULL |          | HASH       |         |               | YES        | NULL       |
+| def           | performance_schema | persisted_variables           |          0 | performance_schema | PRIMARY    |            1 | VARIABLE_NAME  | NULL      |        NULL |     NULL |   NULL |          | HASH       |         |               | YES        | NULL       |
+| def           | classwork          | emp                           |          1 | classwork          | IND_eno    |            1 | eno            | A         |           2 |     NULL |   NULL | YES      | BTREE      |         |               | YES        | NULL       |
++---------------+--------------------+-------------------------------+------------+--------------------+------------+--------------+----------------+-----------+-------------+----------+--------+----------+------------+---------+---------------+------------+------------+
+9 rows in set (0.02 sec)
+
+mysql>

@@ -1,0 +1,399 @@
+Microsoft Windows [Version 10.0.19044.1288]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Sagar>mysql -u Sagar p
+ERROR 1045 (28000): Access denied for user 'Sagar'@'localhost' (using password: NO)
+
+C:\Users\Sagar>mysql -u Sagar -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use classwork;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| customers           |
+| dept                |
+| emp                 |
+| j                   |
+| new_table           |
+| orders              |
+| p                   |
+| parts               |
+| projects            |
+| s                   |
+| salespeople         |
+| sdept               |
+| semp                |
+| sp                  |
+| spj                 |
+| supplier            |
++---------------------+
+16 rows in set (0.02 sec)
+
+mysql> select * from dept;
++--------+-------+------+
+| DeptNo | Dname | Loc  |
++--------+-------+------+
+|      1 | TRN   | BBY  |
+|      2 | EXP   | DLH  |
+|      3 | MKT   | CAL  |
++--------+-------+------+
+3 rows in set (0.02 sec)
+
+mysql> select dname, ename from emp dept
+    -> where dept.deptno = emp.deptno(+);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 2
+mysql> select dname, ename from emp right outer join dept
+    -> on(dept.deptno = emp.deptno);
++-------+--------+
+| dname | ename  |
++-------+--------+
+| TRN   | Kirun  |
+| TRN   | Ali    |
+| TRN   | Arun   |
+| EXP   | Thomas |
+| EXP   | Jack   |
+| MKT   | NULL   |
++-------+--------+
+6 rows in set (0.01 sec)
+
+mysql> select dname, ename from emp right outer join dept
+    -> on(dept.deptno = emp.deptno);
++-------+--------+
+| dname | ename  |
++-------+--------+
+| TRN   | Kirun  |
+| TRN   | Ali    |
+| TRN   | Arun   |
+| EXP   | Thomas |
+| EXP   | Jack   |
+| MKT   | NULL   |
++-------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select dname, ename from emp right outer join dept
+    -> on(dept.deptno = emp.deptno)
+    -> union
+    -> select dname, ename from emp left outer join dept
+    -> on(dept.deptno = emp.deptno);
++-------+--------+
+| dname | ename  |
++-------+--------+
+| TRN   | Kirun  |
+| TRN   | Ali    |
+| TRN   | Arun   |
+| EXP   | Thomas |
+| EXP   | Jack   |
+| MKT   | NULL   |
++-------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select dname, ename from emp, dept
+    -> where dept.deptno = emp.deptno;
++-------+--------+
+| dname | ename  |
++-------+--------+
+| TRN   | Arun   |
+| TRN   | Ali    |
+| TRN   | Kirun  |
+| EXP   | Jack   |
+| EXP   | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select dname, ename from emp, dept;
++-------+--------+
+| dname | ename  |
++-------+--------+
+| MKT   | Arun   |
+| EXP   | Arun   |
+| TRN   | Arun   |
+| MKT   | Ali    |
+| EXP   | Ali    |
+| TRN   | Ali    |
+| MKT   | Kirun  |
+| EXP   | Kirun  |
+| TRN   | Kirun  |
+| MKT   | Jack   |
+| EXP   | Jack   |
+| TRN   | Jack   |
+| MKT   | Thomas |
+| EXP   | Thomas |
+| TRN   | Thomas |
++-------+--------+
+15 rows in set (0.00 sec)
+
+mysql> select a.ename, b.ename from emp b, emp a
+    -> where a.mgr = b.empno;
+ERROR 1054 (42S22): Unknown column 'b.empno' in 'where clause'
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select a.ename, b.ename from emp b, emp a
+    -> where a.empno = b.mgr;
+ERROR 1054 (42S22): Unknown column 'a.empno' in 'where clause'
+mysql> select a.ename, b.ename from emp b, emp a
+    -> where a.eno = b.mgr;
++-------+--------+
+| ename | ename  |
++-------+--------+
+| Arun  | Kirun  |
+| Arun  | Ali    |
+| Jack  | Thomas |
+| Jack  | Arun   |
++-------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> (select min(sal) from emp);
++----------+
+| min(sal) |
++----------+
+|     3000 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select ename from emp where
+    -> sal = ( select min(sal) from emp);
++-------+
+| ename |
++-------+
+| Kirun |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select min(sal) from emp where sal = (select min(sal) from emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select max(sal) from emp
+    -> where sal < (select max(sal) from emp);
++----------+
+| max(sal) |
++----------+
+|     8000 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select sal from emp
+    -> where sal < (select max(sal) from emp);
++------+
+| sal  |
++------+
+| 8000 |
+| 7000 |
+| 3000 |
+| 8000 |
++------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp
+    -> where deptno =
+    -> (select deptno from emp
+    -> where ename = 'Thomas');
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp
+    -> where job =
+    -> (select job from emp
+    -> where ename = 'kirun');
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+3 rows in set (0.00 sec)
+
+mysql> update emp set sal = 9000
+    -> where deptno =
+    -> (select temp.deptno from
+    -> (select deptno from emp
+    -> where ename = 'Thomas')as temp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 5
+mysql> update emp set sal = 9000
+    -> where deptno =
+    -> (select temp.deptno from
+    -> (select deptno from emp
+    -> where ename = 'Thomas')as temp);
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 2  Changed: 1  Warnings: 0
+
+mysql> select * form emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form emp' at line 1
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 9000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> update emp set sal = 9000
+    -> ^C
+mysql> update emp set sal = 8000
+    -> where deptno =
+    -> (select temp.deptno from
+    -> (select deptno from emp
+    -> where ename = 'Thomas')as temp);
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 8000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> update emp set sal = 9000
+    -> where ename = 'jack';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp
+    ->
+    -> where sal = any
+    -> (select sal from emp
+    -> where job = 'M');
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp
+    -> where sal in
+    -> (select sal from emp
+    -> where job = 'M');
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from emp
+    -> where sal >=
+    -> (select min(sal) from emp
+    -> where job ='M');
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+3 rows in set (0.00 sec)
+
+mysql> select sal form emp
+    -> where job = 'M';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'emp
+where job = 'M'' at line 1
+mysql> select sal form emp
+    -> ^C
+mysql> select sal from emp
+    -> where job = 'M';
++------+
+| sal  |
++------+
+| 8000 |
+| 9000 |
++------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp
+    -> where sal > all
+    -> (select sal from emp
+    -> where job = 'M');
+Empty set (0.00 sec)
+
+mysql>

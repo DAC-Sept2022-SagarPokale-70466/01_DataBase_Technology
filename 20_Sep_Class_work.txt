@@ -1,0 +1,652 @@
+Microsoft Windows [Version 10.0.19044.1288]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Sagar>mysql -u Sagar -p
+Enter password: **********
+ERROR 1045 (28000): Access denied for user 'Sagar'@'localhost' (using password: YES)
+
+C:\Users\Sagar>mysql -u Sagar -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classwork          |
+| information_schema |
+| performance_schema |
++--------------------+
+3 rows in set (0.01 sec)
+
+mysql> use classwork;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| customers           |
+| j                   |
+| new_table           |
+| orders              |
+| p                   |
+| parts               |
+| projects            |
+| s                   |
+| salespeople         |
+| sdept               |
+| semp                |
+| sp                  |
+| spj                 |
+| supplier            |
++---------------------+
+14 rows in set (0.01 sec)
+
+mysql> create table emp(ENO int, Ename varchar(20), Sal int, DeptNo int, Job char(1), MGR int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc emp;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| ENO    | int         | YES  |     | NULL    |       |
+| Ename  | varchar(20) | YES  |     | NULL    |       |
+| Sal    | int         | YES  |     | NULL    |       |
+| DeptNo | int         | YES  |     | NULL    |       |
+| Job    | char(1)     | YES  |     | NULL    |       |
+| MGR    | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> insert into emp values(1, 'Arun', 8000, 1, 'M', 4),(2,'Ali', 7000, 1,'C', 1),(3, 'Kirun', 3000, 1, 'C', 1);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into emp values(4, 'Jack', 9000, 2, 'M', NULL),(5,'Thomas', 8000, 2,'C', 4);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * frmo emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'frmo emp' at line 1
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select *
+    -> case
+    -> when job = 'M' then 'Manager'
+    -> when job = 'C' then 'Cleark'
+    -> end "JoB"
+    -> from emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case
+when job = 'M' then 'Manager'
+when job = 'C' then 'Cleark'
+end "JoB"
+from e' at line 2
+mysql> select
+    -> case
+    -> when job = 'M' then 'Manager'
+    -> when job = 'C' then 'Cleark'
+    -> end "JoB"
+    -> from emp;
++---------+
+| JoB     |
++---------+
+| Manager |
+| Cleark  |
+| Cleark  |
+| Manager |
+| Cleark  |
++---------+
+5 rows in set (0.00 sec)
+
+mysql> select *,
+    -> case
+    -> when job = 'M' then 'Manager'
+    -> when job = 'C' then 'Cleark'
+    -> end "JoB"
+    -> from emp;
++------+--------+------+--------+------+------+---------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  | JoB     |
++------+--------+------+--------+------+------+---------+
+|    1 | Arun   | 8000 |      1 | M    |    4 | Manager |
+|    2 | Ali    | 7000 |      1 | C    |    1 | Cleark  |
+|    3 | Kirun  | 3000 |      1 | C    |    1 | Cleark  |
+|    4 | Jack   | 9000 |      2 | M    | NULL | Manager |
+|    5 | Thomas | 8000 |      2 | C    |    4 | Cleark  |
++------+--------+------+--------+------+------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select sum(sal) from emp;
++----------+
+| sum(sal) |
++----------+
+|    35000 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(sal) from emp;
++-----------+
+| avg(sal)  |
++-----------+
+| 7000.0000 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(ifnull(sal,0)) from emp;
++--------------------+
+| avg(ifnull(sal,0)) |
++--------------------+
+|          7000.0000 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select min(sal) from emp;
++----------+
+| min(sal) |
++----------+
+|     3000 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select max(sal) from emp;
++----------+
+| max(sal) |
++----------+
+|     9000 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select min(ifnull(mgr, 0)) from emp;
++---------------------+
+| min(ifnull(mgr, 0)) |
++---------------------+
+|                   0 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select count(eno) from emp;
++------------+
+| count(eno) |
++------------+
+|          5 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) form emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'emp' at line 1
+mysql> select count(*) form emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'emp' at line 1
+mysql> select count (*) form emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '*) form emp' at line 1
+mysql> select count (*) from emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '*) from emp' at line 1
+mysql> select count(sal) from emp;
++------------+
+| count(sal) |
++------------+
+|          5 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from emp;
++----------+
+| count(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) - count(sal) from emp;
++-----------------------+
+| count(*) - count(sal) |
++-----------------------+
+|                     0 |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(sal) from emp
+    -> where deptno = 1;
++----------+
+| sum(sal) |
++----------+
+|    18000 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select sum(sal) from emp
+    -> where job = 'C';
++----------+
+| sum(sal) |
++----------+
+|    18000 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from emp
+    -> where sal > 7000;
++----------+
+| count(*) |
++----------+
+|        3 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select count(*), sum(sal), max(sal), min(sal), avg(sal) from emp;
++----------+----------+----------+----------+-----------+
+| count(*) | sum(sal) | max(sal) | min(sal) | avg(sal)  |
++----------+----------+----------+----------+-----------+
+|        5 |    35000 |     9000 |     3000 | 7000.0000 |
++----------+----------+----------+----------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select ename, min(sal) from emp;
++-------+----------+
+| ename | min(sal) |
++-------+----------+
+| Arun  |     3000 |
++-------+----------+
+1 row in set (0.00 sec)
+
+mysql> select upper(ename), min(sal) from emp;
++--------------+----------+
+| upper(ename) | min(sal) |
++--------------+----------+
+| ARUN         |     3000 |
++--------------+----------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp
+    -> where sal > sum(sal);
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select deptno, sum(sal) from emp
+    -> group by deptno;
++--------+----------+
+| deptno | sum(sal) |
++--------+----------+
+|      1 |    18000 |
+|      2 |    17000 |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp
+    -> d6_sagar_pokale_704661/dbt/classwork^C
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select deptno, sum(sal) from emp
+    -> group by eno;
++--------+----------+
+| deptno | sum(sal) |
++--------+----------+
+|      1 |     8000 |
+|      1 |     7000 |
+|      1 |     3000 |
+|      2 |     9000 |
+|      2 |     8000 |
++--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select round(deptno), sum(sal) from emp
+    -> group by round(deptno);
++---------------+----------+
+| round(deptno) | sum(sal) |
++---------------+----------+
+|             1 |    18000 |
+|             2 |    17000 |
++---------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select sum(sal) from emp
+    -> group by deptno;
++----------+
+| sum(sal) |
++----------+
+|    18000 |
+|    17000 |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> select deptno, sum(sal) from emp where sal > 7000 group by deptno;
++--------+----------+
+| deptno | sum(sal) |
++--------+----------+
+|      1 |     8000 |
+|      2 |    17000 |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select deptno, job, sum(sal) from emp group by deptno, job;
++--------+------+----------+
+| deptno | job  | sum(sal) |
++--------+------+----------+
+|      1 | M    |     8000 |
+|      1 | C    |    10000 |
+|      2 | M    |     9000 |
+|      2 | C    |     8000 |
++--------+------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select deptno, job, sum(sal) from emp group by deptno, job order by job;
++--------+------+----------+
+| deptno | job  | sum(sal) |
++--------+------+----------+
+|      1 | C    |    10000 |
+|      2 | C    |     8000 |
+|      1 | M    |     8000 |
+|      2 | M    |     9000 |
++--------+------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select deptno, job, sum(sal) from emp group by deptno, job order by deptno;
++--------+------+----------+
+| deptno | job  | sum(sal) |
++--------+------+----------+
+|      1 | C    |    10000 |
+|      1 | M    |     8000 |
+|      2 | C    |     8000 |
+|      2 | M    |     9000 |
++--------+------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select deptno, sum(sal) from emp
+    -> group by deptno;
++--------+----------+
+| deptno | sum(sal) |
++--------+----------+
+|      1 |    18000 |
+|      2 |    17000 |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp;
++------+--------+------+--------+------+------+
+| ENO  | Ename  | Sal  | DeptNo | Job  | MGR  |
++------+--------+------+--------+------+------+
+|    1 | Arun   | 8000 |      1 | M    |    4 |
+|    2 | Ali    | 7000 |      1 | C    |    1 |
+|    3 | Kirun  | 3000 |      1 | C    |    1 |
+|    4 | Jack   | 9000 |      2 | M    | NULL |
+|    5 | Thomas | 8000 |      2 | C    |    4 |
++------+--------+------+--------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select deptno, sum(sal) from emp
+    -> group by deptno
+    -> having sum(sal) > 17000
+    -> ;
++--------+----------+
+| deptno | sum(sal) |
++--------+----------+
+|      1 |    18000 |
++--------+----------+
+1 row in set (0.00 sec)
+
+mysql> select max(sum(sal)) from emp;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select max(sum(sal)) from emp
+    -> group by deptno;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select max(sal_sum)
+    -> from
+    -> (select sum(sal) "sum_sal" from emp
+    -> group by deptno)
+    -> as temp;
+ERROR 1054 (42S22): Unknown column 'sal_sum' in 'field list'
+mysql> select max(sal_sum)
+    -> from
+    ->
+    -> (select sum(sal) "sal_sum" from emp
+    -> group by deptno)
+    -> as temp;
++--------------+
+| max(sal_sum) |
++--------------+
+|        18000 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> create table dept(DeptNo int, Dname varchar(10), Loc char(3));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into dept values(1, 'TRN', 'BBY');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(2, 'EXP','DLH');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(3, 'MKT','CAL');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from dept
+    -> ;
++--------+-------+------+
+| DeptNo | Dname | Loc  |
++--------+-------+------+
+|      1 | TRN   | BBY  |
+|      2 | EXP   | DLH  |
+|      3 | MKT   | CAL  |
++--------+-------+------+
+3 rows in set (0.00 sec)
+
+mysql> insert i
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| customers           |
+| dept                |
+| emp                 |
+| j                   |
+| new_table           |
+| orders              |
+| p                   |
+| parts               |
+| projects            |
+| s                   |
+| salespeople         |
+| sdept               |
+| semp                |
+| sp                  |
+| spj                 |
+| supplier            |
++---------------------+
+16 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+-------+------+
+| DeptNo | Dname | Loc  |
++--------+-------+------+
+|      1 | TRN   | BBY  |
+|      2 | EXP   | DLH  |
+|      3 | MKT   | CAL  |
++--------+-------+------+
+3 rows in set (0.00 sec)
+
+mysql> select dname, ename from emp, dept
+    -> where dept.deptno = emp.deptno;
++-------+--------+
+| dname | ename  |
++-------+--------+
+| TRN   | Arun   |
+| TRN   | Ali    |
+| TRN   | Kirun  |
+| EXP   | Jack   |
+| EXP   | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select dname, ename from dept,emp
+    -> where dept.deptno = emp.deptno;
++-------+--------+
+| dname | ename  |
++-------+--------+
+| TRN   | Arun   |
+| TRN   | Ali    |
+| TRN   | Kirun  |
+| EXP   | Jack   |
+| EXP   | Thomas |
++-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select ename, dname from emp,dept
+    -> where dept.deptno = emp.deptno;
++--------+-------+
+| ename  | dname |
++--------+-------+
+| Arun   | TRN   |
+| Ali    | TRN   |
+| Kirun  | TRN   |
+| Jack   | EXP   |
+| Thomas | EXP   |
++--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select ename, dname from emp, dept
+    -> where dept.deptno = emp.deptno;
++--------+-------+
+| ename  | dname |
++--------+-------+
+| Arun   | TRN   |
+| Ali    | TRN   |
+| Kirun  | TRN   |
+| Jack   | EXP   |
+| Thomas | EXP   |
++--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select ename, dname from emp, dept
+    -> where dept.deptno = emp.deptno;
++--------+-------+
+| ename  | dname |
++--------+-------+
+| Arun   | TRN   |
+| Ali    | TRN   |
+| Kirun  | TRN   |
+| Jack   | EXP   |
+| Thomas | EXP   |
++--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select ename, dname from emp, dept
+    -> where dept.deptno = emp.deptno
+    -> order by 1;
++--------+-------+
+| ename  | dname |
++--------+-------+
+| Ali    | TRN   |
+| Arun   | TRN   |
+| Jack   | EXP   |
+| Kirun  | TRN   |
+| Thomas | EXP   |
++--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select ename, dname from emp, dept
+    -> where dept.deptno = emp.deptno
+    -> order by 2;
++--------+-------+
+| ename  | dname |
++--------+-------+
+| Jack   | EXP   |
+| Thomas | EXP   |
+| Arun   | TRN   |
+| Ali    | TRN   |
+| Kirun  | TRN   |
++--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select dname
+    -> dept.deptno = emp.deptno
+    -> order by 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.deptno = emp.deptno
+order by 1' at line 2
+mysql> select dname,sum(sal) from emp, dept
+    -> where dept.deptno = emp.deptno
+    -> group by dname;
++-------+----------+
+| dname | sum(sal) |
++-------+----------+
+| TRN   |    18000 |
+| EXP   |    17000 |
++-------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from s;
++----+-------+--------+--------+
+| S# | Sname | status | city   |
++----+-------+--------+--------+
+| S1 | Smith |     20 | London |
+| S2 | Jones |     10 | Paris  |
+| S3 | Blake |     30 | Paris  |
+| S4 | Clark |     20 | London |
+| S5 | Adams |     30 | Athens |
++----+-------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql>
