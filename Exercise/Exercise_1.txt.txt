@@ -1,0 +1,226 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classwork          |
+| information_schema |
+| performance_schema |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> use classwork;
+Database changed
+mysql> show tablesl
+    -> ^C
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| new_table           |
+| parts               |
+| projects            |
+| sdept               |
+| semp                |
+| spj                 |
+| supplier            |
++---------------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from supplier;
++------+---------+--------+--------+
+| Sno  | Sname   | Status | City   |
++------+---------+--------+--------+
+| S1   | Smith   |     20 | London |
+| S2   | Jones   |     10 | Paris  |
+| S3   | Blacke  |     30 | Paris  |
+| S4   | Cleark  |     20 | London |
+| S5   | Adams   |     30 | Athens |
+| S6   | Stewart |   NULL | NULL   |
++------+---------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select sno, sname from supplier;
++------+---------+
+| sno  | sname   |
++------+---------+
+| S1   | Smith   |
+| S2   | Jones   |
+| S3   | Blacke  |
+| S4   | Cleark  |
+| S5   | Adams   |
+| S6   | Stewart |
++------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from parts;
++------+-------+-------+--------+--------+
+| Pno  | Pname | Color | Weight | City   |
++------+-------+-------+--------+--------+
+| P1   | Nut   | Red   |     12 | London |
+| P2   | Bolt  | Green |     17 | Paris  |
+| P3   | Screw | Blue  |     17 | Rome   |
+| P4   | Screw | Red   |     14 | London |
+| P5   | Cam   | Blue  |     12 | Paris  |
+| P6   | Coq   | Red   |     19 | London |
++------+-------+-------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select pname, color from parts where city = 'London';
++-------+-------+
+| pname | color |
++-------+-------+
+| Nut   | Red   |
+| Screw | Red   |
+| Coq   | Red   |
++-------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from supplier where city ='London';
++------+--------+--------+--------+
+| Sno  | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Smith  |     20 | London |
+| S4   | Cleark |     20 | London |
++------+--------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from supplier where city ='Paris' or city = 'Athens';
++------+--------+--------+--------+
+| Sno  | Sname  | Status | City   |
++------+--------+--------+--------+
+| S2   | Jones  |     10 | Paris  |
+| S3   | Blacke |     30 | Paris  |
+| S5   | Adams  |     30 | Athens |
++------+--------+--------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from projects where city = 'athens';
++------+---------+--------+
+| Jno  | Jname   | City   |
++------+---------+--------+
+| J3   | Reader  | Athens |
+| J4   | Console | Athens |
++------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select pname from parts where weight between 12 and 14;
++-------+
+| pname |
++-------+
+| Nut   |
+| Screw |
+| Cam   |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from parts;
++------+-------+-------+--------+--------+
+| Pno  | Pname | Color | Weight | City   |
++------+-------+-------+--------+--------+
+| P1   | Nut   | Red   |     12 | London |
+| P2   | Bolt  | Green |     17 | Paris  |
+| P3   | Screw | Blue  |     17 | Rome   |
+| P4   | Screw | Red   |     14 | London |
+| P5   | Cam   | Blue  |     12 | Paris  |
+| P6   | Coq   | Red   |     19 | London |
++------+-------+-------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from suppliers where status>= 20;
+ERROR 1146 (42S02): Table 'classwork.suppliers' doesn't exist
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| new_table           |
+| parts               |
+| projects            |
+| sdept               |
+| semp                |
+| spj                 |
+| supplier            |
++---------------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from supplier where status>= 20;
++------+--------+--------+--------+
+| Sno  | Sname  | Status | City   |
++------+--------+--------+--------+
+| S1   | Smith  |     20 | London |
+| S3   | Blacke |     30 | Paris  |
+| S4   | Cleark |     20 | London |
+| S5   | Adams  |     30 | Athens |
++------+--------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from supplier where city != 'London';
++------+--------+--------+--------+
+| Sno  | Sname  | Status | City   |
++------+--------+--------+--------+
+| S2   | Jones  |     10 | Paris  |
+| S3   | Blacke |     30 | Paris  |
+| S5   | Adams  |     30 | Athens |
++------+--------+--------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from supplier;
++------+---------+--------+--------+
+| Sno  | Sname   | Status | City   |
++------+---------+--------+--------+
+| S1   | Smith   |     20 | London |
+| S2   | Jones   |     10 | Paris  |
+| S3   | Blacke  |     30 | Paris  |
+| S4   | Cleark  |     20 | London |
+| S5   | Adams   |     30 | Athens |
+| S6   | Stewart |   NULL | NULL   |
++------+---------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select city from supplier;
++--------+
+| city   |
++--------+
+| London |
+| Paris  |
+| Paris  |
+| London |
+| Athens |
+| NULL   |
++--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from parts;
++------+-------+-------+--------+--------+
+| Pno  | Pname | Color | Weight | City   |
++------+-------+-------+--------+--------+
+| P1   | Nut   | Red   |     12 | London |
+| P2   | Bolt  | Green |     17 | Paris  |
+| P3   | Screw | Blue  |     17 | Rome   |
+| P4   | Screw | Red   |     14 | London |
+| P5   | Cam   | Blue  |     12 | Paris  |
+| P6   | Coq   | Red   |     19 | London |
++------+-------+-------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select weight, weight*1000 as "MILIGRAM, weight/1000 as "KILOGRAM" from parts;
+    "> select weight, weight*1000 as "MILIGRAM, weight/1000 as "KILOGRAM" from parts;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'KILOGRAM" from parts;
+select weight, weight*1000 as "MILIGRAM, weight/1000 as "K' at line 1
+mysql> select weight, weight*1000 as "MILIGRAM, weight/1000 as "KILOGRAM" from parts;
+    "> select weight, weight*1000 as "MILIGRAM, weight/1000 as "KILOGRAM" from parts;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'KILOGRAM" from parts;
+select weight, weight*1000 as "MILIGRAM, weight/1000 as "K' at line 1
+mysql> select weight, weight*1000 as "MILIGRAM", weight/1000 as "KILOGRAM" from parts;
++--------+----------+----------+
+| weight | MILIGRAM | KILOGRAM |
++--------+----------+----------+
+|     12 |    12000 |   0.0120 |
+|     17 |    17000 |   0.0170 |
+|     17 |    17000 |   0.0170 |
+|     14 |    14000 |   0.0140 |
+|     12 |    12000 |   0.0120 |
+|     19 |    19000 |   0.0190 |
++--------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql>

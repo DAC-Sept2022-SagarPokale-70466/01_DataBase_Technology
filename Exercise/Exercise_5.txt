@@ -1,0 +1,195 @@
+mysql> select * from s;
++----+-------+--------+--------+
+| S# | Sname | status | city   |
++----+-------+--------+--------+
+| S1 | Smith |     20 | London |
+| S2 | Jones |     10 | Paris  |
+| S3 | Blake |     30 | Paris  |
+| S4 | Clark |     20 | London |
+| S5 | Adams |     30 | Athens |
++----+-------+--------+--------+
+mysql> select * from p;
++----+-------+-------+--------+--------+
+| P# | Pname | color | weight | city   |
++----+-------+-------+--------+--------+
+| P1 | Nut   | Red   |     12 | London |
+| P2 | Bolt  | Green |     17 | Paris  |
+| P3 | Screw | Blue  |     17 | Rome   |
+| P4 | Screw | Red   |     14 | London |
+| P5 | Cam   | Blue  |     12 | Paris  |
+| P6 | Cog   | Red   |     19 | London |
++----+-------+-------+--------+--------+
+mysql> select * from j;
++----+----------+--------+
+| J# | Jname    | City   |
++----+----------+--------+
+| J1 | Sorter   | Paris  |
+| J2 | Punch    | Rome   |
+| J3 | Reader   | Athens |
+| J4 | Console  | Athens |
+| J5 | Collator | London |
+| J6 | Terminal | Oslo   |
+| J7 | Tape     | London |
+
+mysql> select * from spj;
++------+------+------+------+
+| Sno  | Pno  | Jno  | QTY  |
++------+------+------+------+
+| S1   | P1   | J1   |  200 |
+| S1   | P1   | J4   |  700 |
+
+ Display the Supplier name, Supplying Parts to a Project in the same City.
+
+
+1. Display the Supplier name and the Quantity sold. 
+
+mysql> select sname, sum(qty)"Total QTY" from spj, s
+    -> where s.`s#` = spj.sno
+    -> group by sname;
++-------+-----------+
+| sname | Total QTY |
++-------+-----------+
+| Smith |       900 |
+| Jones |      3200 |
+| Blake |       700 |
+| Clark |       600 |
+| Adams |      3100 |
++-------+-----------+
+
+2. Display the Part name and Quantity sold.
+
+mysql> select pname"Part Name", sum(qty)"Total Qty" from spj, p
+    -> eight
+    -> group by pname;
++-----------+-----------+
+| Part Name | Total Qty |
++-----------+-----------+
+| Nut       |      1000 |
+| Screw     |      4800 |
+| Cam       |      1100 |
+| Cog       |      1300 |
+| Bolt      |       300 |
++-----------+-----------+
+
+3. Display the Project name and Quantity sold. 
+
+mysql> select jname "Projects Name", sum(qty)"QTY" from spj, j
+    -> where j.`j#` = spj.jno
+    -> group by jname;
++---------------+------+
+| Projects Name | QTY  |
++---------------+------+
+| Sorter        |  800 |
+| Console       | 3300 |
+| Punch         | 1200 |
+| Reader        |  500 |
+| Collator      | 1100 |
+| Terminal      |  400 |
+| Tape          | 1200 |
++---------------+------+
+
+4. Display the Supplier name, Part name, Project name and Quantity sold.
+
+mysql> select sname"Supplier", pname"Parts", jname"Projects_Name", Qty from spj,s,p,j
+    -> where spj.sno = s.`s#` and
+    -> spj.pno = p.`p#` and
+    -> spj.jno = j.`j#` ;
++----------+-------+---------------+------+
+| Supplier | Parts | Projects_Name | Qty  |
++----------+-------+---------------+------+
+| Jones    | Screw | Sorter        |  400 |
+| Blake    | Screw | Sorter        |  200 |
+| Smith    | Nut   | Sorter        |  200 |
+| Adams    | Cog   | Punch         |  200 |
+| Jones    | Cam   | Punch         |  100 |
+| Blake    | Screw | Punch         |  500 |
+| Jones    | Screw | Punch         |  200 |
+| Adams    | Bolt  | Punch         |  200 |
+| Clark    | Cog   | Reader        |  300 |
+| Jones    | Screw | Reader        |  200 |
+| Adams    | Cog   | Console       |  500 |
+| Adams    | Cam   | Console       |  400 |
+| Adams    | Screw | Console       |  800 |
+| Jones    | Screw | Console       |  500 |
+| Adams    | Screw | Console       |  200 |
+| Adams    | Bolt  | Console       |  100 |
+| Smith    | Nut   | Console       |  700 |
+| Adams    | Nut   | Console       |  100 |
+| Adams    | Cam   | Collator      |  500 |
+| Jones    | Screw | Collator      |  600 |
+| Jones    | Screw | Terminal      |  400 |
+| Clark    | Cog   | Tape          |  300 |
+| Adams    | Cam   | Tape          |  100 |
+| Jones    | Screw | Tape          |  800 |
++----------+-------+---------------+------+se
+
+5. Display the Supplier name, Supplying Parts to a Project in the same City.
+
+
+6. Display the Part name that is ‘Red’ is color, and the Quantity sold. 
+
+mysql> select pname "Red_Part", sum(qty) "QTY" from spj, p
+    -> where p.`p#` = spj.pno
+    -> and color = 'red'
+    -> group by pname;
++----------+------+
+| Red_Part | QTY  |
++----------+------+
+| Nut      | 1000 |
+| Screw    | 1300 |
+| Cog      | 1300 |
++----------+------+
+
+7. Display all the Quantity sold by Suppliers with the Status = 20. 
+
+mysql> select sname"Supplier",status"Status", sum(qty) from spj, s
+    -> where s.`s#` = spj.sno
+    -> and status = 20
+    -> group by sname;
++----------+--------+----------+
+| Supplier | Status | sum(qty) |
++----------+--------+----------+
+| Smith    |     20 |      900 |
+| Clark    |     20 |      600 |
++----------+--------+----------+
+
+8. Display all the Parts and Quantity with a Weight > 14.
+
+mysql> select pname"Part Name", sum(qty)"Total Qty" from spj, p
+    -> where spj.pno = p.`p#` and weight > 14
+    -> group by pname;
++-----------+-----------+
+| Part Name | Total Qty |
++-----------+-----------+
+| Screw     |      3500 |
+| Cog       |      1300 |
+| Bolt      |       300 |
++-----------+-----------+
+
+9. Display all the Project names and City, which has bought more than 500 Parts.
+
+10. Display all the Part names and Quantity sold that have a Weight less than 15.
+
+mysql> select pname"Parts", sum(qty)"QTY" from spj, p
+    -> where spj.pno = p.`p#` and weight < 15
+    -> group by pname;
++-------+------+
+| Parts | QTY  |
++-------+------+
+| Nut   | 1000 |
+| Cam   | 1100 |
+| Screw | 1300 |
++-------+------+
+
+11. Display all the Employee names and the name of their Managers.
+
+mysql> select a.ename "EMPLOYEE", b.ename"MANAGER" from emp a, emp b
+    -> where a.eno = b.mgr;
++----------+---------+
+| EMPLOYEE | MANAGER |
++----------+---------+
+| Jack     | Arun    |
+| Arun     | Ali     |
+| Arun     | Kirun   |
+| Jack     | Thomas  |
++----------+---------+

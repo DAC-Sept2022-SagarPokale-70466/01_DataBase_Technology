@@ -1,0 +1,286 @@
+mysql> select * from s;
++----+-------+--------+--------+
+| S# | Sname | status | city   |
++----+-------+--------+--------+
+| S1 | Smith |     20 | London |
+| S2 | Jones |     10 | Paris  |
+| S3 | Blake |     30 | Paris  |
+| S4 | Clark |     20 | London |
+| S5 | Adams |     30 | Athens |
++----+-------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select substr(sname,1,1) from s;
++-------------------+
+| substr(sname,1,1) |
++-------------------+
+| S                 |
+| J                 |
+| B                 |
+| C                 |
+| A                 |
++-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select substr(sname,1,1)"Initial Name" from s;
++--------------+
+| Initial Name |
++--------------+
+| S            |
+| J            |
+| B            |
+| C            |
+| A            |
++--------------+
+5 rows in set (0.00 sec)
+
+mysql> select upper(sname) from s;
++--------------+
+| upper(sname) |
++--------------+
+| SMITH        |
+| JONES        |
+| BLAKE        |
+| CLARK        |
+| ADAMS        |
++--------------+
+5 rows in set (0.00 sec)
+
+mysql> select lower(sname) from s;
++--------------+
+| lower(sname) |
++--------------+
+| smith        |
+| jones        |
+| blake        |
+| clark        |
+| adams        |
++--------------+
+5 rows in set (0.00 sec)
+
+mysql> select lpad(sname, 25,'_') from s;
++---------------------------+
+| lpad(sname, 25,'_')       |
++---------------------------+
+| ____________________Smith |
+| ____________________Jones |
+| ____________________Blake |
+| ____________________Clark |
+| ____________________Adams |
++---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select lpad(sname, 25,'_')"Left Padding" from s;
++---------------------------+
+| Left Padding              |
++---------------------------+
+| ____________________Smith |
+| ____________________Jones |
+| ____________________Blake |
+| ____________________Clark |
+| ____________________Adams |
++---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select replace(sname,'la','ro') from s;
++--------------------------+
+| replace(sname,'la','ro') |
++--------------------------+
+| Smith                    |
+| Jones                    |
+| Broke                    |
+| Crork                    |
+| Adams                    |
++--------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select replace(sname,'l','r') (sname,'a','o') from s;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(sname,'a','o') from s' at line 1
+mysql> select replace(sname,'l','r') from s;
++------------------------+
+| replace(sname,'l','r') |
++------------------------+
+| Smith                  |
+| Jones                  |
+| Brake                  |
+| Crark                  |
+| Adams                  |
++------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select replace(sname,'l','r') or (sname,'a','o') from s;
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select replace(sname,'l','r') replace(sname,'a','o') from s;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'replace(sname,'a','o') from s' at line 1
+mysql> select replace(sname,'l','r') replace(sname,'a','o'^Z^Zom s;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'replace(sname,'a','o'→→om s' at line 1
+mysql> select replace(replace(sname,'a','o')sname,'l','r') from s;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sname,'l','r') from s' at line 1
+mysql> select replace(replace(sname,'a','o')'l','r') from s;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''l','r') from s' at line 1
+mysql> select replace(replace(sname,'a','o'),'l','r') from s;
++-----------------------------------------+
+| replace(replace(sname,'a','o'),'l','r') |
++-----------------------------------------+
+| Smith                                   |
+| Jones                                   |
+| Broke                                   |
+| Crork                                   |
+| Adoms                                   |
++-----------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select replace(replace(sname,'l','r'),'a','o') from s;
++-----------------------------------------+
+| replace(replace(sname,'l','r'),'a','o') |
++-----------------------------------------+
+| Smith                                   |
+| Jones                                   |
+| Broke                                   |
+| Crork                                   |
+| Adoms                                   |
++-----------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select replace(replace(sname,'l','r'),'a','o')"Replacement" from s;
++-------------+
+| Replacement |
++-------------+
+| Smith       |
+| Jones       |
+| Broke       |
+| Crork       |
+| Adoms       |
++-------------+
+5 rows in set (0.00 sec)
+
+mysql> select sname"Supplier", length(sname)"lengthOfName" from s;
++----------+--------------+
+| Supplier | lengthOfName |
++----------+--------------+
+| Smith    |            5 |
+| Jones    |            5 |
+| Blake    |            5 |
+| Clark    |            5 |
+| Adams    |            5 |
++----------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from s where soundex(sname) = soundex('Bloke');
++----+-------+--------+-------+
+| S# | Sname | status | city  |
++----+-------+--------+-------+
+| S3 | Blake |     30 | Paris |
++----+-------+--------+-------+
+1 row in set (0.00 sec)
+
+mysql> select
+    -> case
+    -> when status = 10 then 'Ten'
+    -> when status = 20 then 'Twenty'
+    -> when statys = 30 then 'Thirty'
+    -> else 'Others'
+    -> end
+    -> from s;
+ERROR 1054 (42S22): Unknown column 'statys' in 'field list'
+mysql> select
+    -> case
+    -> when status = 10 then 'Ten'
+    -> when status = 20 then 'Twenty'
+    -> when status = 30 then 'Thirty'
+    -> else 'Others'
+    -> end
+    -> from s;
++------------------------------------------------------------------------------------------------------------------+
+| case
+when status = 10 then 'Ten'
+when status = 20 then 'Twenty'
+when status = 30 then 'Thirty'
+else 'Others'
+end |
++------------------------------------------------------------------------------------------------------------------+
+| Twenty                                                                                                           |
+| Ten                                                                                                              |
+| Thirty                                                                                                           |
+| Twenty                                                                                                           |
+| Thirty                                                                                                           |
++------------------------------------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select sname
+    -> case
+    -> when status = 10 then 'Ten'
+    -> when status = 20 then 'Twenty'
+    -> when status = 30 then 'Thirty'
+    -> else 'Others'
+    -> end
+    -> from s;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case
+when status = 10 then 'Ten'
+when status = 20 then 'Twenty'
+when status = 30' at line 2
+mysql> select sname,
+    -> case
+    -> when status = 10 then 'Ten'
+    -> when status = 20 then 'Twenty'
+    -> when status = 30 then 'Thirty'
+    -> else 'Others'
+    -> end
+    -> from s;
++-------+------------------------------------------------------------------------------------------------------------------+
+| sname | case
+when status = 10 then 'Ten'
+when status = 20 then 'Twenty'
+when status = 30 then 'Thirty'
+else 'Others'
+end |
++-------+------------------------------------------------------------------------------------------------------------------+
+| Smith | Twenty                                                                                                           |
+| Jones | Ten                                                                                                              |
+| Blake | Thirty                                                                                                           |
+| Clark | Twenty                                                                                                           |
+| Adams | Thirty                                                                                                           |
++-------+------------------------------------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select sname,
+    -> case
+    -> when status = 10 then 'Ten'
+    -> when status = 20 then 'Twenty'
+    -> when status = 30 then 'Thirty'
+    -> else 'Others'
+    -> end
+    -> "Status"
+    -> from s;
++-------+--------+
+| sname | Status |
++-------+--------+
+| Smith | Twenty |
+| Jones | Ten    |
+| Blake | Thirty |
+| Clark | Twenty |
+| Adams | Thirty |
++-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from s;
++----+-------+--------+--------+
+| S# | Sname | status | city   |
++----+-------+--------+--------+
+| S1 | Smith |     20 | London |
+| S2 | Jones |     10 | Paris  |
+| S3 | Blake |     30 | Paris  |
+| S4 | Clark |     20 | London |
+| S5 | Adams |     30 | Athens |
++----+-------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select dayname(sysdate()) from dual;
++--------------------+
+| dayname(sysdate()) |
++--------------------+
+| Monday             |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql>

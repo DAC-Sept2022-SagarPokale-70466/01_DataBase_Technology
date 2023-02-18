@@ -1,0 +1,139 @@
+1. Display the minimum status in the supplier table.
+
+mysql> select min(status)"Minimum" from s;
++---------+
+| Minimum |
++---------+
+|      10 |
++---------+
+1 row in set (0.00 sec)
+
+2. Display the maximum weight in the parts table.
+
+mysql> select max(weight)"Max_Weight" from p;
++------------+
+| Max_Weight |
++------------+
+|         19 |
++------------+
+1 row in set (0.00 sec)
+
+3. Display the average weight in the parts table.
+
+mysql> select avg(weight)"Avg_weight" from p;
++------------+
+| Avg_weight |
++------------+
+|    15.1667 |
++------------+
+1 row in set (0.00 sec)
+
+4. Display the total Quanity sold for parts 'P1'.
+
+mysql> select sum(qty) from spj where pno = 'P1';
++----------+
+| sum(qty) |
++----------+
+|     1000 |
++----------+
+1 row in set (0.00 sec)
+
+5. Display the total Quantity sold for each part.
+
+mysql> select pno,sum(qty) from spj group by pno order by 1;
++------+----------+
+| pno  | sum(qty) |
++------+----------+
+| P1   |     1000 |
+| P2   |      300 |
+| P3   |     3500 |
+| P4   |     1300 |
+| P5   |     1100 |
+| P6   |     1300 |
++------+----------+
+
+6. Display the average Quantity sold for each part. 
+
+mysql> select pno,avg(qty) from spj group by pno order by 1;
++------+----------+
+| pno  | avg(qty) |
++------+----------+
+| P1   | 333.3333 |
+| P2   | 150.0000 |
+| P3   | 388.8889 |
+| P4   | 650.0000 |
+| P5   | 275.0000 |
+| P6   | 325.0000 |
++------+----------+
+
+7. Display the maximum Quantity sold for each part, provided the maximum Quantity is greater
+than 800.
+
+mysql> select sno, pno, jno, greatest(qty, 800)"Greater Than 800" from spj;
++------+------+------+------------------+
+| sno  | pno  | jno  | Greater Than 800 |
++------+------+------+------------------+
+| S1   | P1   | J1   |              800 |
+| S1   | P1   | J4   |              800 |
+| S2   | P3   | J1   |              800 |
+| S2   | P3   | J2   |              800 |
+| S2   | P3   | J3   |              800 |
+| S2   | P3   | J4   |              800 |
+| S2   | P3   | J5   |              800 |
+| S2   | P3   | J6   |              800 |
+| S2   | P3   | J7   |              800 |
+| S2   | P5   | J2   |              800 |
+| S3   | P3   | J1   |              800 |
+| S3   | P4   | J2   |              800 |
+| S4   | P6   | J3   |              800 |
+| S4   | P6   | J7   |              800 |
+| S5   | P2   | J2   |              800 |
+| S5   | P2   | J4   |              800 |
+| S5   | P5   | J5   |              800 |
+| S5   | P5   | J7   |              800 |
+| S5   | P6   | J2   |              800 |
+| S5   | P1   | J4   |              800 |
+| S5   | P3   | J4   |              800 |
+| S5   | P4   | J4   |              800 |
+| S5   | P5   | J4   |              800 |
+| S5   | P6   | J4   |              800 |
++------+------+------+------------------+
+8. Display the status and the count of suppliers with that status.
+
+mysql> select status, count(status)"Count" from s group by status order by 1;
++--------+-------+
+| status | Count |
++--------+-------+
+|     10 |     1 |
+|     20 |     2 |
+|     30 |     2 |
++--------+-------+
+
+9. Display the count of projects going on in different cities.
+
+mysql> select city,count(city) from j group by city;
++--------+-------------+
+| city   | count(city) |
++--------+-------------+
+| Paris  |           1 |
+| Rome   |           1 |
+| Athens |           2 |
+| London |           2 |
+| Oslo   |           1 |
++--------+-------------+
+
+10. What is the difference between count(status) and count(*) ?
+Ans. The count function will count the total no. of rows in specific column except NULL
+	while the count(*) will count all the rows in specific column including NULL.
+
+11.Display the Status and the Count of Suppliers with that Status in the following format as shown below:-
+
+
+select case when status = 10 then 'Ten' when status = 20 then 'Twenty' when status = 30 then 'Thirty' end "Status", count(status) from s group by 2 order by 2;
++--------+---------------+
+| Status | count(status) |
++--------+---------------+
+| Ten    |             1 |
+| Twenty |             2 |
+| Thirty |             2 |
++--------+---------------+ 

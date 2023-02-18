@@ -1,0 +1,348 @@
+Microsoft Windows [Version 10.0.19044.1288]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Sagar>mysql --version
+mysql  Ver 8.0.30 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\Sagar>mysql -u root -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create user Sagar@localhost identified by 'Sagar@123';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> create databas classwork;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databas classwork' at line 1
+mysql> create databases classwork;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databases classwork' at line 1
+mysql> create database classwork;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases
+    -> show databases
+    -> show databases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'show databases
+show databases' at line 2
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classwork          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use classwok;
+ERROR 1049 (42000): Unknown database 'classwok'
+mysql> use classwork;
+Database changed
+mysql> grant all privileges on classwork.* to Sagar@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> exit
+Bye
+
+C:\Users\Sagar>mysql -u Sagar@localhost -p
+Enter password: *********
+ERROR 1045 (28000): Access denied for user 'Sagar@localhost'@'localhost' (using password: YES)
+
+C:\Users\Sagar>mysql -u Sagar@localhost -p
+Enter password: *********
+ERROR 1045 (28000): Access denied for user 'Sagar@localhost'@'localhost' (using password: YES)
+
+C:\Users\Sagar>mysql -u Sagar@localhost -p
+Enter password: *********
+ERROR 1045 (28000): Access denied for user 'Sagar@localhost'@'localhost' (using password: YES)
+
+C:\Users\Sagar>mysql -u Sagar -p
+Enter password: *********
+ERROR 1045 (28000): Access denied for user 'Sagar'@'localhost' (using password: YES)
+
+C:\Users\Sagar>mysql -u Sagar -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 25
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> select user(), database();
++-----------------+------------+
+| user()          | database() |
++-----------------+------------+
+| Sagar@localhost | NULL       |
++-----------------+------------+
+1 row in set (0.00 sec)
+
+mysql> use classwork;
+Database changed
+mysql> select user(), database();
++-----------------+------------+
+| user()          | database() |
++-----------------+------------+
+| Sagar@localhost | classwork  |
++-----------------+------------+
+1 row in set (0.00 sec)
+
+mysql> show tables;
+Empty set (0.01 sec)
+
+mysql> !cls
+    -> cls
+    -> ^C
+mysql> cl scr
+    -> ^C
+mysql> create table new_table(Roll_no int, Name varchar(25), Surname(25), Age int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(25), Age int)' at line 1
+mysql> create table new_table(Roll_no int, Name varchar(25), Surname varchar(25), Age int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| new_table           |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into new_table values (1, 'Sagar' , 'Pokale', 22);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_classwork |
++---------------------+
+| new_table           |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select * form new_table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form new_table' at line 1
+mysql> select * from new_table;
++---------+-------+---------+------+
+| Roll_no | Name  | Surname | Age  |
++---------+-------+---------+------+
+|       1 | Sagar | Pokale  |   22 |
++---------+-------+---------+------+
+1 row in set (0.00 sec)
+
+mysql> cl scr
+    -> c^C
+mysql> cl scr;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cl scr' at line 1
+mysql> cl scr;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cl scr' at line 1
+mysql> cl scr;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cl scr' at line 1
+mysql> ^C
+mysql> alter table new_table add salary;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> alter table new_table add salary int;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * new_table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'new_table' at line 1
+mysql> select * from new_table;
++---------+-------+---------+------+--------+
+| Roll_no | Name  | Surname | Age  | salary |
++---------+-------+---------+------+--------+
+|       1 | Sagar | Pokale  |   22 |   NULL |
++---------+-------+---------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into new_table(salary) values(50,000);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into new_table (salary) values(50,000);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into new_table (salary) values('50,000');
+ERROR 1265 (01000): Data truncated for column 'salary' at row 1
+mysql> insert into new_table (salary) values ('50,000');
+ERROR 1265 (01000): Data truncated for column 'salary' at row 1
+mysql> insert into new_table values (2, 'Anukesh', 'Bhosale', 23 , 99);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from new_table;
++---------+---------+---------+------+--------+
+| Roll_no | Name    | Surname | Age  | salary |
++---------+---------+---------+------+--------+
+|       1 | Sagar   | Pokale  |   22 |   NULL |
+|       2 | Anukesh | Bhosale |   23 |     99 |
++---------+---------+---------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> insert into new_table (salary) values (99);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from new_table;
++---------+---------+---------+------+--------+
+| Roll_no | Name    | Surname | Age  | salary |
++---------+---------+---------+------+--------+
+|       1 | Sagar   | Pokale  |   22 |   NULL |
+|       2 | Anukesh | Bhosale |   23 |     99 |
+|    NULL | NULL    | NULL    | NULL |     99 |
++---------+---------+---------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> update new_table set salary = 99 where name = 'sagar';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from new_table;
++---------+---------+---------+------+--------+
+| Roll_no | Name    | Surname | Age  | salary |
++---------+---------+---------+------+--------+
+|       1 | Sagar   | Pokale  |   22 |     99 |
+|       2 | Anukesh | Bhosale |   23 |     99 |
+|    NULL | NULL    | NULL    | NULL |     99 |
++---------+---------+---------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> delete from new_table where name = null;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from new_table;
++---------+---------+---------+------+--------+
+| Roll_no | Name    | Surname | Age  | salary |
++---------+---------+---------+------+--------+
+|       1 | Sagar   | Pokale  |   22 |     99 |
+|       2 | Anukesh | Bhosale |   23 |     99 |
+|    NULL | NULL    | NULL    | NULL |     99 |
++---------+---------+---------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> delete from new_table where name = null;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from new_table;
++---------+---------+---------+------+--------+
+| Roll_no | Name    | Surname | Age  | salary |
++---------+---------+---------+------+--------+
+|       1 | Sagar   | Pokale  |   22 |     99 |
+|       2 | Anukesh | Bhosale |   23 |     99 |
+|    NULL | NULL    | NULL    | NULL |     99 |
++---------+---------+---------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> delete from new_table where name = NULL and surname = NULL;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from new_table;
++---------+---------+---------+------+--------+
+| Roll_no | Name    | Surname | Age  | salary |
++---------+---------+---------+------+--------+
+|       1 | Sagar   | Pokale  |   22 |     99 |
+|       2 | Anukesh | Bhosale |   23 |     99 |
+|    NULL | NULL    | NULL    | NULL |     99 |
++---------+---------+---------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classwork          |
+| information_schema |
+| performance_schema |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> use classwork;
+Database changed
+mysql> create table Exercise_1;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table SEMP (EMPNO CHAR(4), EMPNAMECHAR(20), BASIC FLOAT, DEPTNO CHAR(2), DEPTHEAD CHAR(4));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(20), BASIC FLOAT, DEPTNO CHAR(2), DEPTHEAD CHAR(4))' at line 1
+mysql> create table SEMP (EMPNO CHAR(4), EMPNAMECHAR(20), BASIC FLOAT, DEPTNO CHAR(2), DEPTHEAD CHAR(4));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(20), BASIC FLOAT, DEPTNO CHAR(2), DEPTHEAD CHAR(4))' at line 1
+mysql> create table SEMP (EMPNO CHAR(4), EMPNAMECHAR(20), BASIC FLOAT, DEPTNO CHAR(2), DEPTHEAD CHAR(4));^T
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(20), BASIC FLOAT, DEPTNO CHAR(2), DEPTHEAD CHAR(4))' at line 1
+    -> create table SEMP (EMPNO CHAR(4), EMPNAMECHAR(20), BASIC FLOAT, DEPTNO CHAR(2), DEPTHEAD CHAR(4));^T^C
+mysql> create table SEMP (EMPNO CHAR(4), EMPNAME CHAR(20), BASIC FLOAT, DEPTNO CHAR(2), DEPTHEAD CHAR(4));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM SEMP;
+Empty set (0.00 sec)
+
+mysql> CREATE TABLE SDEPT (DEPTNO CHAR(2), DEPTNAME CHAR(15));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO SDEPT VALUES ('10', 'Development'),('20','Training');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from sdept;
++--------+-------------+
+| DEPTNO | DEPTNAME    |
++--------+-------------+
+| 10     | Development |
+| 20     | Training    |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into semp (empno, empname, basic, deptno) values ('0001', 'Sunil', 6000, '10');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into semp (empno, empname, basic, deptno) values ('0002', 'Hiren', 8000, '20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into semp (empno, empname, basic, deptno, depthead) values ('0003', 'Ali', 4000, '10', '0001');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into semp (empno, empname, basic, depthead) values ('0004', 'Gorge', 6000, '0020');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from semp;
++-------+---------+-------+--------+----------+
+| EMPNO | EMPNAME | BASIC | DEPTNO | DEPTHEAD |
++-------+---------+-------+--------+----------+
+| 0001  | Sunil   |  6000 | 10     | NULL     |
+| 0002  | Hiren   |  8000 | 20     | NULL     |
+| 0003  | Ali     |  4000 | 10     | 0001     |
+| 0004  | Gorge   |  6000 | NULL   | 0020     |
++-------+---------+-------+--------+----------+
+4 rows in set (0.00 sec)
+
+mysql> create table Supplier (SId int, Sname varchar(20), Status varchar(20), City(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(20))' at line 1
+mysql> create table Supplier (SId int, Sname varchar(20), Status varchar(20), City varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into supplier values (ggg
